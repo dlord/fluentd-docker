@@ -9,6 +9,7 @@ RUN apk add --no-cache --update --virtual .build-deps \
     && gem install \
         fluent-plugin-elasticsearch \
         fluent-plugin-geoip \
+        fluent-plugin-kubernetes_metadata_filter \
     && gem sources --clear-all \
     && apk del .build-deps \
     && rm -rf /home/fluent/.gem/ruby/2.5.0/cache/*.gem \
