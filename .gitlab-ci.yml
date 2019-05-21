@@ -1,0 +1,45 @@
+---
+stages:
+  - build
+  - test
+  - deploy
+
+build image for UAT:
+  stage: build
+  script:
+    - docker build --pull -t $TUPPERWARE_URI:develop .
+    - docker login -u $TUPPERWARE_USERNAME -p $TUPPERWARE_PASSWORD tupperware.mynt.xyz
+    - docker push $TUPPERWARE_URI:develop
+  only:
+    refs:
+      - develop
+
+build image for master:
+  stage: build
+  script:
+    - docker build --pull -t $TUPPERWARE_URI:latest .
+    - docker login -u $TUPPERWARE_USERNAME -p $TUPPERWARE_PASSWORD tupperware.mynt.xyz
+    - docker push $TUPPERWARE_URI:latest
+  only:
+    refs:
+      - master
+
+build image for tag:
+  stage: build
+  script:
+    - docker build --pull -t $TUPPERWARE_URI:$CI_COMMIT_TAG .
+    - docker login -u $TUPPERWARE_USERNAME -p $TUPPERWARE_PASSWORD tupperware.mynt.xyz
+    - docker push $TUPPERWARE_URI:$CI_COMMIT_TAG
+  only:
+    - tags
+
+verify image:
+  stage: test
+  script:
+    - docker build --pull -t $CI_PROJECT_NAME:test .
+    - docker rmi $CI_PROJECT_NAME:test
+  except:
+    refs:
+      - master
+      - develop
+      - tags

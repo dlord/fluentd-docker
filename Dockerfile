@@ -1,4 +1,4 @@
-FROM fluent/fluentd:v1.3-1
+FROM fluent/fluentd:v1.5-1
 
 USER root
 
@@ -10,6 +10,7 @@ RUN apk add --no-cache --update --virtual .build-deps \
         fluent-plugin-elasticsearch \
         fluent-plugin-geoip \
         fluent-plugin-kubernetes_metadata_filter \
+        fluent-plugin-s3 \
     && gem sources --clear-all \
     && apk del .build-deps \
     && rm -rf /home/fluent/.gem/ruby/2.5.0/cache/*.gem \
