@@ -11,8 +11,9 @@ RUN apk add --no-cache --update --virtual .build-deps \
         fluent-plugin-geoip \
         fluent-plugin-kubernetes_metadata_filter \
         fluent-plugin-s3 \
+        fluent-plugin-filter-base64-decode \
     && gem sources --clear-all \
     && apk del .build-deps \
-    && rm -rf /home/fluent/.gem/ruby/2.5.0/cache/*.gem \
+    && rm -rf /home/fluent/.gem/ruby/2.5.0/cache/*.gem
 
 USER fluent
